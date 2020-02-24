@@ -3,6 +3,7 @@ import './App.css';
 import Home from "./components/home/Home";
 import About from "./components/about/About";
 import Products from "./components/products/Products";
+import FirebaseProducts from "./components/firebaseProducts/FireBaseProducts";
 import Product from "./components/products/Product";
 import {
     BrowserRouter as Router,
@@ -19,12 +20,14 @@ function App(props) {
                     <Link to={"/"}>Home</Link>
                     <Link to={"/about"}>About</Link>
                     <Link to={"/products"}>Products</Link>
+                    <Link to={"/fireproducts"}>Products</Link>
                     <Link to={"/product/1"}>Product</Link>
                 </nav>
                 <Switch>
                     <Route path={"/"} exact component={Home}/>
                     <Route path={"/about"} component={About} />
                     <Route path={"/products"} component={Products} />
+                    <Route path={"/fireproducts"} component={FirebaseProducts} />
                     <Route path={"/product/:id"} component={Product}/>
                 </Switch>
             </div>
