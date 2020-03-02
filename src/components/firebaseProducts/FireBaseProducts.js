@@ -6,6 +6,8 @@ import fire from "../../firebase/Fire";
 function FirebaseProducts(props) {
     const user = useSelector(state => state.user);
     const cart = useSelector(state => state.cart);
+    const [items, setItems]=React.useState(cart);
+    const sort= useSelector(state=>state.sort);
     const [country] = React.useState(user.country);
     const dispatch=useDispatch();
     const [value, setValues] = React.useState({
@@ -21,6 +23,20 @@ function FirebaseProducts(props) {
 
 
     const db = fire.firestore();
+
+    React.useEffect(()=>{
+        let sortedList = cart;
+        for(let i in sort){
+            if(sort[i].toggle){
+                sortedList=sortedList.filter(it=>{
+                    return sort[i].val.includes(it[i])
+                });
+            }
+        }
+
+
+        setItems(sortedList);
+    },[sort, cart]);
 
     const handleChange = prop => event => {
         if (prop === "cost") {
@@ -65,7 +81,7 @@ function FirebaseProducts(props) {
     };
 
 
-    let itemsEle = cart.map((it, idx) =>
+    let itemsEle = items.map((it, idx) =>
 
         <div key={idx}>
             <h1>{it.name}</h1>
@@ -83,13 +99,20 @@ function FirebaseProducts(props) {
     return (
         <div>
             <div>
+
+                <button style={sort.type.val.includes("shirt")?style:null} onClick={()=>dispatch(changeSort("type","shirt"))}>Shirts</button>
+                <button onClick={()=>dispatch(changeSort("type","pants"))}>Pants</button>
+                <button onClick={()=>dispatch(changeSort("color","red"))}>Red</button>
+                <button onClick={()=>dispatch(changeSort("color","green"))}>Green</button>
+                <button onClick={()=>dispatch(changeSort("color","blue"))}>Blue</button>
+
                 <input type="text" placeholder="Name" onChange={handleChange("name")} value={value.name}/>
                 <input type="text" placeholder="Cost" onChange={handleChange("cost")} value={value.cost.USA}/>
                 <input type="text" placeholder="Type" onChange={handleChange("type")} value={value.type}/>
                 <input type="text" placeholder="Color" onChange={handleChange("color")} value={value.color}/>
                 <button onClick={submit}>Submit</button>
             </div>
-            {cart.length === 0 ? "No Items Filtered" : itemsEle}
+            {items.length === 0 ? "No Items Filtered" : itemsEle}
         </div>
     )
 }
