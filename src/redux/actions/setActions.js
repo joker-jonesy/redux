@@ -19,3 +19,10 @@ export const changeSort = (prop,val)=>{
     }
 };
 
+export const initCart = (value)=>{
+    return {
+        type:"INIT_CART",
+        value:value
+    }
+};
+

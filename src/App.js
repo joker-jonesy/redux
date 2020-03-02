@@ -11,22 +11,26 @@ import {
     Route,
     Link
 } from "react-router-dom";
+import fire from "./firebase/Fire";
+import {useSelector, useDispatch} from "react-redux";
 
 function App(props) {
+
+    const cart = useSelector(state=>state.cart);
+    const dispatch = useDispatch();
+    const db = fire.firestore();
     return (
         <Router>
             <div className="App">
                 <nav>
                     <Link to={"/"}>Home</Link>
                     <Link to={"/about"}>About</Link>
-                    <Link to={"/products"}>Products</Link>
                     <Link to={"/fireproducts"}>Products</Link>
                     <Link to={"/product/1"}>Product</Link>
                 </nav>
                 <Switch>
                     <Route path={"/"} exact component={Home}/>
                     <Route path={"/about"} component={About} />
-                    <Route path={"/products"} component={Products} />
                     <Route path={"/fireproducts"} component={FirebaseProducts} />
                     <Route path={"/product/:id"} component={Product}/>
                 </Switch>
