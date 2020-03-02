@@ -26,3 +26,9 @@ export const initCart = (value)=>{
     }
 };
 
+export const checkChange = ()=>{
+    return {
+        type:"CHECK_CHANGE"
+    }
+};
+

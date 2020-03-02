@@ -1,13 +1,13 @@
 import React from "react";
 import {useSelector, useDispatch} from "react-redux";
-import {changeSort} from "../../redux/actions/setActions";
+import {changeSort, checkChange} from "../../redux/actions/setActions";
 import fire from "../../firebase/Fire";
 
 function FirebaseProducts(props) {
-    const [items, setItems] = React.useState([]);
     const user = useSelector(state => state.user);
+    const cart = useSelector(state => state.cart);
     const [country] = React.useState(user.country);
-    const [submitCheck, checkSubmit]=React.useState(false);
+    const dispatch=useDispatch();
     const [value, setValues] = React.useState({
         color: "",
         cost: {
@@ -21,33 +21,6 @@ function FirebaseProducts(props) {
 
 
     const db = fire.firestore();
-
-    React.useEffect(() => {
-        let newItems = [];
-
-        db.collection("products").get().then(function (snapshot) {
-            snapshot.forEach(function (doc) {
-                const object = doc.data();
-
-                let item = {
-                    color: object.color,
-                    cost: {
-                        USA: object.cost.USA,
-                        CANADA: object.cost.CANADA,
-                        UK: object.cost.UK
-                    },
-                    name: object.name,
-                    type: object.type,
-                    id:doc.id
-                };
-
-                newItems.push(item);
-            });
-
-            setItems(newItems);
-            checkSubmit(false);
-        });
-    }, [db, submitCheck]);
 
     const handleChange = prop => event => {
         if (prop === "cost") {
@@ -78,7 +51,7 @@ function FirebaseProducts(props) {
                         name: "",
                         type: ""
                     });
-                    checkSubmit(true);
+                    dispatch(checkChange());
             });
 
         }
@@ -87,12 +60,12 @@ function FirebaseProducts(props) {
 
     const deleteItem =(id)=>{
         db.collection("products").doc(id).delete().then(()=>{
-            checkSubmit(true);
+            dispatch(checkChange());
         })
     };
 
 
-    let itemsEle = items.map((it, idx) =>
+    let itemsEle = cart.map((it, idx) =>
 
         <div key={idx}>
             <h1>{it.name}</h1>
@@ -116,7 +89,7 @@ function FirebaseProducts(props) {
                 <input type="text" placeholder="Color" onChange={handleChange("color")} value={value.color}/>
                 <button onClick={submit}>Submit</button>
             </div>
-            {items.length === 0 ? "No Items Filtered" : itemsEle}
+            {cart.length === 0 ? "No Items Filtered" : itemsEle}
         </div>
     )
 }

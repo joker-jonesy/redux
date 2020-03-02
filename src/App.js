@@ -13,12 +13,39 @@ import {
 } from "react-router-dom";
 import fire from "./firebase/Fire";
 import {useSelector, useDispatch} from "react-redux";
+import {initCart} from "./redux/actions/setActions";
 
 function App(props) {
-
-    const cart = useSelector(state=>state.cart);
+    const change = useSelector(state=>state.change);
     const dispatch = useDispatch();
     const db = fire.firestore();
+
+    React.useEffect(() => {
+        let newItems = [];
+
+        db.collection("products").get().then(function (snapshot) {
+            snapshot.forEach(function (doc) {
+                const object = doc.data();
+
+                let item = {
+                    color: object.color,
+                    cost: {
+                        USA: object.cost.USA,
+                        CANADA: object.cost.CANADA,
+                        UK: object.cost.UK
+                    },
+                    name: object.name,
+                    type: object.type,
+                    id:doc.id
+                };
+
+                newItems.push(item);
+            });
+
+            dispatch(initCart(newItems));
+        });
+    }, [db,dispatch,change]);
+
     return (
         <Router>
             <div className="App">

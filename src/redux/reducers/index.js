@@ -1,5 +1,6 @@
 const initState = {
     toggle:false,
+    change:false,
     sort:{
         type:{toggle:false, val:[]},
         color:{toggle:false, val:[]}
@@ -67,6 +68,13 @@ const rootReducer = (state=initState, action)=>{
         return{
             ...state,
             cart:action.value
+        }
+    }
+
+    if(action.type==="CHECK_CHANGE"){
+        return{
+            ...state,
+            change:!state.change
         }
     }
 
