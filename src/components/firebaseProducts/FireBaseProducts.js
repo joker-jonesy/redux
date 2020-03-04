@@ -80,10 +80,21 @@ function FirebaseProducts(props) {
         })
     };
 
+    const addToMyStuff=(it)=>{
+
+        const newItem ={
+            name:it.name
+        };
+
+        db.collection("people").doc("fwYuJlXnvDrRRzcpGGEr").collection("mystuff").add(newItem).then(()=>{
+            console.log("added");
+        });
+    };
+
 
     let itemsEle = items.map((it, idx) =>
 
-        <div key={idx}>
+        <div key={idx} onClick={()=>{addToMyStuff(it)}}>
             <h1>{it.name}</h1>
             <h4>{country === "USA" && "Cost in USA:" + it.cost.USA}</h4>
             <h4>{country === "CANADA" && "Cost in CANADA:" + it.cost.CANADA}</h4>
