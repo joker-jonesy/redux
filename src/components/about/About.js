@@ -33,7 +33,7 @@ function About(){
         fire.auth().onAuthStateChanged(function(user) {
             if (user) {
 
-                setUser(user.email);
+                setUser(user.displayName);
 
             } else {
                 setUser("Nobody is Here")

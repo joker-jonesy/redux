@@ -4,7 +4,8 @@ import fire from "../../firebase/Fire";
 function SignUpPage(){
     const [value, setValues] = React.useState({
         email: "",
-        password:""
+        password:"",
+        name:""
     });
 
     const handleChange = prop => event => {
@@ -13,10 +14,20 @@ function SignUpPage(){
 
     const onSubmit = ()=>{
         fire.auth().createUserWithEmailAndPassword(value.email, value.password).then(()=>{
-            setValues({
-                email: "",
-                password:""
+            let user = fire.auth().currentUser;
+
+            user.updateProfile({
+                displayName: value.name
+            }).then(function() {
+                setValues({
+                    email: "",
+                    password:"",
+                    name:""
+                });
+            }).catch(function(error) {
+                // An error happened.
             });
+
         }).catch(function(error) {
             // Handle Errors here.
             let errorCode = error.code;
@@ -30,6 +41,7 @@ function SignUpPage(){
         <div>
             <input onChange={handleChange("email")} placeholder={"Email..."}/>
             <input onChange={handleChange("password")} placeholder={"Password..."} type={"password"}/>
+            <input onChange={handleChange("name")} placeholder={"Name..."}/>
             <button onClick={onSubmit}>Submit</button>
         </div>
     )

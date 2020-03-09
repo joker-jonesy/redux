@@ -66,7 +66,7 @@ function App(props) {
                     <Link to={"/product/1"}>Product</Link>
                     <Link to={"/signup"}>Sign Up</Link>
                     <Link to={"/signin"}>Sign Up</Link>
-                    <button>Sign Out</button>
+                    <button onClick={SignOut}>Sign Out</button>
                 </nav>
                 <Switch>
                     <Route path={"/"} exact component={Home}/>
