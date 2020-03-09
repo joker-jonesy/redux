@@ -7,6 +7,7 @@ function About(){
 
     const [myItems, setMyItems] = React.useState([]);
     const [countries] = React.useState(["USA", "CANADA"]);
+    const [userData, setUser] = React.useState("");
     const user = useSelector(state=>state.user);
     const dispatch = useDispatch();
     const db = fire.firestore();
@@ -28,6 +29,18 @@ function About(){
 
             setMyItems(newItems);
         });
+
+        fire.auth().onAuthStateChanged(function(user) {
+            if (user) {
+
+                setUser(user.email);
+
+            } else {
+                setUser("Nobody is Here")
+            }
+        });
+
+
     }, [db]);
 
     let myItemsEle = myItems.map((it,idx)=>
@@ -38,6 +51,7 @@ function About(){
         <div>
             <h1>{user.name} {user.lastName}</h1>
             <h3>{user.country}</h3>
+            <h3>{userData}</h3>
             <button onClick={()=>dispatch(setToggle())}>Toggle Power</button>
             <button onClick={()=>dispatch(changeCountry("USA"))}>USA</button>
             <button onClick={()=>dispatch(changeCountry("CANADA"))}>CANADA</button>
