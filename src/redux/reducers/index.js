@@ -1,9 +1,13 @@
 const initState = {
     toggle:false,
     change:false,
+    signedIn:false,
     sort:{
         type:{toggle:false, val:[]},
         color:{toggle:false, val:[]}
+    },
+    realUser:{
+        name:""
     },
     user:{
         name:"Luke",
@@ -75,6 +79,22 @@ const rootReducer = (state=initState, action)=>{
         return{
             ...state,
             change:!state.change
+        }
+    }
+
+    if(action.type==="CHECK_SIGN_IN"){
+        return{
+            ...state,
+            signedIn: action.check
+        }
+    }
+
+    if(action.type==="CURRENT_USER"){
+        return{
+            ...state,
+            realUser: {
+                name:action.user.displayName
+            }
         }
     }
 

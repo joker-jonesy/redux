@@ -15,7 +15,7 @@ import {
 } from "react-router-dom";
 import fire from "./firebase/Fire";
 import {useSelector, useDispatch} from "react-redux";
-import {initCart} from "./redux/actions/setActions";
+import {initCart, checkSignIn, currentUser} from "./redux/actions/setActions";
 
 function App(props) {
     const change = useSelector(state=>state.change);
@@ -46,6 +46,17 @@ function App(props) {
 
             dispatch(initCart(newItems));
         });
+
+        fire.auth().onAuthStateChanged(function(user) {
+            if (user) {
+                dispatch(checkSignIn(true));
+                dispatch(currentUser(user));
+            } else {
+                dispatch(checkSignIn(false));
+                dispatch(currentUser({name:""}));
+            }
+        });
+
     }, [db,dispatch,change]);
 
     const SignOut = ()=>{
@@ -65,7 +76,7 @@ function App(props) {
                     <Link to={"/fireproducts"}>Products</Link>
                     <Link to={"/product/1"}>Product</Link>
                     <Link to={"/signup"}>Sign Up</Link>
-                    <Link to={"/signin"}>Sign Up</Link>
+                    <Link to={"/signin"}>Sign In</Link>
                     <button onClick={SignOut}>Sign Out</button>
                 </nav>
                 <Switch>
