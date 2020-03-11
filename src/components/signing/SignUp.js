@@ -1,5 +1,7 @@
 import React from "react";
 import fire from "../../firebase/Fire";
+import {useDispatch} from "react-redux";
+import {checkChange} from "../../redux/actions/setActions";
 
 function SignUpPage(){
     const [value, setValues] = React.useState({
@@ -7,6 +9,7 @@ function SignUpPage(){
         password:"",
         name:""
     });
+    const dispatch = useDispatch();
 
     const handleChange = prop => event => {
         setValues({...value, [prop]: event.target.value});
@@ -24,6 +27,9 @@ function SignUpPage(){
                     password:"",
                     name:""
                 });
+
+                dispatch(checkChange());
+
             }).catch(function(error) {
                 // An error happened.
             });

@@ -7,6 +7,7 @@ import FirebaseProducts from "./components/firebaseProducts/FireBaseProducts";
 import Product from "./components/products/Product";
 import SignUpPage from "./components/signing/SignUp";
 import SignInPage from "./components/signing/SignIn";
+import Navigation from "./components/navigation/Nav";
 import {
     BrowserRouter as Router,
     Switch,
@@ -59,26 +60,10 @@ function App(props) {
 
     }, [db,dispatch,change]);
 
-    const SignOut = ()=>{
-        fire.auth().signOut().then(function() {
-            // Sign-out successful.
-        }).catch(function(error) {
-            // An error happened.
-        });
-    }
-
     return (
         <Router>
             <div className="App">
-                <nav>
-                    <Link to={"/"}>Home</Link>
-                    <Link to={"/about"}>About</Link>
-                    <Link to={"/fireproducts"}>Products</Link>
-                    <Link to={"/product/1"}>Product</Link>
-                    <Link to={"/signup"}>Sign Up</Link>
-                    <Link to={"/signin"}>Sign In</Link>
-                    <button onClick={SignOut}>Sign Out</button>
-                </nav>
+                <Navigation/>
                 <Switch>
                     <Route path={"/"} exact component={Home}/>
                     <Route path={"/about"} component={About} />
