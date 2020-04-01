@@ -12,7 +12,7 @@ import {
     BrowserRouter as Router,
     Switch,
     Route,
-    Link
+    Redirect
 } from "react-router-dom";
 import fire from "./firebase/Fire";
 import {useSelector, useDispatch} from "react-redux";
@@ -20,6 +20,7 @@ import {initCart, checkSignIn, currentUser} from "./redux/actions/setActions";
 
 function App(props) {
     const change = useSelector(state=>state.change);
+    const signedIn = useSelector(state=>state.signedIn);
     const dispatch = useDispatch();
     const db = fire.firestore();
 
@@ -49,6 +50,9 @@ function App(props) {
         });
 
         fire.auth().onAuthStateChanged(function(user) {
+
+            console.log(user)
+
             if (user) {
                 dispatch(checkSignIn(true));
                 dispatch(currentUser(user));
@@ -66,7 +70,9 @@ function App(props) {
                 <Navigation/>
                 <Switch>
                     <Route path={"/"} exact component={Home}/>
-                    <Route path={"/about"} component={About} />
+                    <Route path={"/about"}>
+                        {signedIn? <About/>:<Redirect to={"/signin"}/>}
+                    </Route>
                     <Route path={"/fireproducts"} component={FirebaseProducts} />
                     <Route path={"/product/:id"} component={Product}/>
                     <Route path={"/signup"} component={SignUpPage}/>

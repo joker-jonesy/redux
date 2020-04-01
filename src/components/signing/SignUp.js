@@ -10,6 +10,7 @@ function SignUpPage(){
         name:""
     });
     const dispatch = useDispatch();
+    const db = fire.firestore();
 
     const handleChange = prop => event => {
         setValues({...value, [prop]: event.target.value});
@@ -30,9 +31,12 @@ function SignUpPage(){
 
                 dispatch(checkChange());
 
+                db.collection("people").doc(user.uid).collection("mystuff").add({name:"Jerry"});
             }).catch(function(error) {
                 // An error happened.
             });
+
+
 
         }).catch(function(error) {
             // Handle Errors here.

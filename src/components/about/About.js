@@ -15,8 +15,9 @@ function About(){
 
     React.useEffect(() => {
         let newItems = [];
+        let userCurrent = fire.auth().currentUser;
 
-        db.collection("people").doc("fwYuJlXnvDrRRzcpGGEr").collection("mystuff").get().then(function (snapshot) {
+        db.collection("people").doc(userCurrent.uid).collection("mystuff").get().then(function (snapshot) {
             snapshot.forEach(function (doc) {
                 const object = doc.data();
 
